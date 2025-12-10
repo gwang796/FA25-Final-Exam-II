@@ -9,7 +9,7 @@
 #include <ctime>
 #include <cstdlib>
 using namespace std;
-const int SIZE = 100, DRINKS = 25, RUNS = 10;
+const int SIZE = 100, DRINKS = 25, RUNS = 10, START = 3;
 
 struct customer {
     string name,drink;
@@ -83,6 +83,12 @@ int main(int argc, const char * argv[]) {
     customer *head = nullptr;
     customer *tail = nullptr;
     
+    for (int i = 0; i < START; i++) {
+        string n = randName(names);
+        string d = randDrink(drinks);
+        addCustomer(head, tail, n, d);
+    }
+    printQeue(head);
     return 0;
 }
 
@@ -108,8 +114,9 @@ void addCustomer(customer *&head, customer *&tail,string name, string drink){
 
 void printQeue(customer *head){
     customer *temp = head;
+    cout << "Line: " << endl;
     while (temp) {
-        cout << temp->name << "ordered " << temp->drink << endl;
+        cout << temp->name << " ordered " << temp->drink << endl;
         temp = temp->next;
     }
 }
