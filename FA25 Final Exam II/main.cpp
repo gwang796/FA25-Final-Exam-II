@@ -13,18 +13,24 @@ const int SIZE = 100, DRINKS = 25, RUNS = 10, START = 3;
 
 struct customer {
     string name,drink;
-    customer *next = nullptr;
+    customer *next;
+    
+    customer(string n, string d) {
+        name = n;
+        drink = d;
+        next = nullptr;
+    }
 };
 
 //function randName gets a random name from string array
 //arguments: string array
 //return: string
-string randName(string name[]);
+string randName(string names[]);
 
 //function randDrink gets a random drink from string array
 //arguments: string array
 //return: string
-string randDrink(string drink[]);
+string randDrink(string drinks[]);
 
 //function addCustomer adds a element to the end of linked list
 //arguments: head pointer, tail pointer, string name, string drink
@@ -39,7 +45,7 @@ void customerPays(customer *&head,customer *&tail);
 //function printQeue prints the line of customer
 //arguments:head pointer
 //return: none
-void printQeue(customer *head);
+void printQueue(customer *head);
 
 int main(int argc, const char * argv[]) {
     srand(time(0));
@@ -88,45 +94,45 @@ int main(int argc, const char * argv[]) {
     customer *head = nullptr;
     customer *tail = nullptr;
     
+    cout << "Initial Line" << endl;
     for (int i = 0; i < START; i++) {
         string n = randName(names);
         string d = randDrink(drinks);
         addCustomer(head, tail, n, d);
     }
+    printQueue(head);
     
     for (int i = 0; i < RUNS; i++) {
-        <#statements#>
+        cout << "Queue " << i + 1 << ": " << endl;
+        int chance = rand() % 100 + 1;
+        if (chance <= 50) {
+            string n = randName(names);
+            string d = randDrink(drinks);
+            addCustomer(head, tail, n, d);
+        }
+        cout << "No customer joins Line" << endl;
+        customerPays(head, tail);
     }
-    printQeue(head);
     return 0;
 }
 
-string randName(string name[]){
+string randName(string names[]){
     int choice = rand() % SIZE;
-    return name[choice];
+    return names[choice];
 }
 
-string randDrink(string drink[]){
+string randDrink(string drinks[]){
     int choice = rand() % DRINKS;
-    return drink[choice];
+    return drinks[choice];
 }
 
 void addCustomer(customer *&head, customer *&tail,string name, string drink){
     customer *current = new customer(name,drink);
-    if (!head) { //linked list empty
+    if (!head) {
         head = tail = current;
     } else {
         tail->next = current;
         tail = current;
-    }
-}
-
-void printQeue(customer *head){
-    customer *temp = head;
-    cout << "Line: " << endl;
-    while (temp) {
-        cout << temp->name << " ordered " << temp->drink << endl;
-        temp = temp->next;
     }
 }
 
@@ -137,8 +143,18 @@ void customerPays(customer *&head,customer *&tail){
     }
     customer *temp = head;
     head = head->next;
+    cout << temp->name << " gets their drink " << temp->drink << ", and leaves the line" << endl;
     if (!head) {
         tail = nullptr;
     }
     delete temp;
+}
+
+
+void printQueue(customer *head){
+    customer *temp = head;
+    while (temp) {
+        cout << temp->name << " ordered " << temp->drink << endl;
+        temp = temp->next;
+    }
 }
