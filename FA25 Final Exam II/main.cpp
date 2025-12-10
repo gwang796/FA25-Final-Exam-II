@@ -27,12 +27,17 @@ string randName(string name[]);
 string randDrink(string drink[]);
 
 //function addCustomer adds a element to the end of linked list
-//arguments: string name, string drink
+//arguments: head pointer, tail pointer, string name, string drink
 //return: none
 void addCustomer(customer *&head, customer *&tail, string name, string drink);
 
+//function customerPays has customer at the front of the line(head) get their drink and leave
+//arguments: head pointer, tail pointer
+//return: none
+void customerPays(customer *&head,customer *&tail);
+
 //function printQeue prints the line of customer
-//arguments: none
+//arguments:head pointer
 //return: none
 void printQeue(customer *head);
 
@@ -88,6 +93,10 @@ int main(int argc, const char * argv[]) {
         string d = randDrink(drinks);
         addCustomer(head, tail, n, d);
     }
+    
+    for (int i = 0; i < RUNS; i++) {
+        <#statements#>
+    }
     printQeue(head);
     return 0;
 }
@@ -119,4 +128,17 @@ void printQeue(customer *head){
         cout << temp->name << " ordered " << temp->drink << endl;
         temp = temp->next;
     }
+}
+
+void customerPays(customer *&head,customer *&tail){
+    if (!head) {
+        cout << "Line is empty" << endl;
+        return;
+    }
+    customer *temp = head;
+    head = head->next;
+    if (!head) {
+        tail = nullptr;
+    }
+    delete temp;
 }
