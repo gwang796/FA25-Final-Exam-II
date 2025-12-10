@@ -75,6 +75,11 @@ void printDeque(const deque<customer> &line);
 //return: none
 void printVector(const vector<customer> &line);
 
+//function printStack prints the line of customers for stack container
+//argument: stack line
+//return: none
+void printStack(stack<customer> line);
+
 int main(int argc, const char * argv[]) {
     srand(time(0));
     //used LLM to create data set
@@ -198,6 +203,8 @@ int main(int argc, const char * argv[]) {
     printDeque(muffinLine);
     cout << "\nInitial Bracelet Line: " << endl;
     printVector(braceletLine);
+    cout << "\nInitial Sandwich Line: " << endl;
+    printStack(sandwichLine);
     
     
     for (int i = 0; i < RUNS; i++) {
@@ -328,5 +335,15 @@ void printVector(const vector<customer> &line){
     }
     for (const customer &c: line) {
         cout << c.name << " ordered " << c.item << endl;
+    }
+}
+
+void printStack(stack<customer> line){
+    if (line.empty()) {
+        cout << "Line is empty" << endl;
+    }
+    while (!line.empty()) {
+        cout << line.top().name << " ordered " << line.top().item << endl;
+        line.pop();
     }
 }
