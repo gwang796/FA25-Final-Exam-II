@@ -333,6 +333,10 @@ void customerPays(customer *&head,customer *&tail){
 
 void printQueue(customer *head){
     customer *temp = head;
+    cout << "Line: " << endl;
+    if (!head) {
+        cout << "Line is empty" << endl;
+    }
     while (temp) {
         cout << temp->name << " ordered " << temp->item << endl;
         temp = temp->next;
@@ -340,6 +344,7 @@ void printQueue(customer *head){
 }
 
 void printDeque(const deque<customer> &line){
+    cout << "Line: " << endl;
     if (line.empty()) {
         cout << "Line is empty" << endl;
     }
@@ -349,6 +354,7 @@ void printDeque(const deque<customer> &line){
 }
 
 void printVector(const vector<customer> &line){
+    cout << "Line: " << endl;
     if (line.empty()) {
         cout << "Line is empty" << endl;
     }
@@ -358,6 +364,7 @@ void printVector(const vector<customer> &line){
 }
 
 void printStack(stack<customer> line){
+    cout << "Line: " << endl;
     if (line.empty()) {
         cout << "Line is empty" << endl;
     }
