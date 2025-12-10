@@ -155,14 +155,14 @@ int main(int argc, const char * argv[]) {
     //initialize muffin line
     for (int i = 0; i < START; i++) {
         string n = randName(names);
-        string d = randDrink(drinks);
+        string d = randMuffin(muffins);
         muffinLine.push_back({n,d});
     }
     
     //initialize bracelet line
     for (int i = 0; i < START; i++) {
         string n = randName(names);
-        string d = randDrink(drinks);
+        string d = randBracelet(bracelets);
         braceletLine.push_back({n,d});
     }
     
@@ -170,6 +170,8 @@ int main(int argc, const char * argv[]) {
     printQueue(head);
     cout << "\nInitial Muffin Line: " << endl;
     printDeque(muffinLine);
+    cout << "\nInitial Bracelet Line: " << endl;
+    printVector(braceletLine);
     
     
     for (int i = 0; i < RUNS; i++) {
@@ -180,46 +182,48 @@ int main(int argc, const char * argv[]) {
             string n = randName(names);
             string d = randDrink(drinks);
             addCustomer(head, tail, n, d);
+            cout << n << " joins the line for " << d << endl;
+        } else {
+            cout << "No customer joins Line" << endl;
         }
-        cout << "No customer joins Line" << endl;
+
         customerPays(head, tail);
         printQueue(head);
-        cout << endl;
         
-        cout << "Muffin Booth Line: " << endl;
+        cout << "\nMuffin Booth Line: " << endl;
         chance = rand() % 100 + 1;
         if (chance <= 50) {
             string n = randName(names);
             string d = randMuffin(muffins);
             muffinLine.push_back({n,d});
+            cout << n << " joins the line for " << d << endl;
         } else {
-            cout << "No customer joins Line" << endl;
+            cout << "No customer joins line" << endl;
         }
         
         if (!muffinLine.empty()) {
             cout << muffinLine.front().name << " gets their muffin and leaves the line" << endl;
             muffinLine.pop_front();
-        } else {
-            cout << "Line is empty" << endl;
         }
+        
         printDeque(muffinLine);
         
-        cout << "Bracelet Booth Line: " << endl;
+        cout << "\nBracelet Booth Line: " << endl;
         chance = rand() % 100 + 1;
         if (chance <= 50) {
             string n = randName(names);
-            string d = randMuffin(muffins);
+            string d = randBracelet(bracelets);
             braceletLine.push_back({n,d});
+            cout << n << " joins the line for " << d << endl;
         } else {
-            cout << "No customer joins Line" << endl;
+            cout << "No customer joins line" << endl;
         }
         
         if (!braceletLine.empty()) {
-            cout << braceletLine.front().name << " gets their muffin and leaves the line" << endl;
-           // braceletLine
-        } else {
-            cout << "Line is empty" << endl;
+            cout << braceletLine.front().name << " gets their bracelet and leaves the line" << endl;
+            braceletLine.erase(braceletLine.begin());
         }
+        
         printVector(braceletLine);
     }
     return 0;
@@ -279,12 +283,18 @@ void printQueue(customer *head){
 }
 
 void printDeque(const deque<customer> &line){
+    if (line.empty()) {
+        cout << "Line is empty" << endl;
+    }
     for (const customer &c : line) {
         cout << c.name << " ordered " << c.item << endl;
     }
 }
 
 void printVector(const vector<customer> &line){
+    if (line.empty()) {
+        cout << "Line is empty" << endl;
+    }
     for (const customer &c: line) {
         cout << c.name << " ordered " << c.item << endl;
     }
