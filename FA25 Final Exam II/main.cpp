@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <deque>
 #include <vector>
+#include <stack>
 using namespace std;
 const int SIZE1 = 100, SIZE2 = 10 ,SIZE3 = 25, RUNS = 10, START = 3;
 
@@ -43,6 +44,11 @@ string randMuffin(string muffins[]);
 //argument: string array
 //return: string
 string randBracelet(string bracelets[]);
+
+//function randSandwich gets random sandwich from string array
+//argument: string array
+//return: string
+string randSandwich(string sandwiches[]);
 
 //function addCustomer adds a element to the end of linked list
 //arguments: head of linked list, tail of linked list, string name, string drink
@@ -140,10 +146,24 @@ int main(int argc, const char * argv[]) {
         "Silver Bracelet"
     };
     
+    string sandwiches[SIZE2] = {
+        "Turkey Sandwich",
+        "Ham and Cheese Sandwich",
+        "Chicken Salad Sandwich",
+        "Tuna Sandwich",
+        "BLT Sandwich",
+        "Grilled Cheese Sandwich",
+        "Club Sandwich",
+        "Roast Beef Sandwich",
+        "Veggie Sandwich",
+        "Pulled Pork Sandwich"
+    };
+    
     customer *head = nullptr;
     customer *tail = nullptr;
     deque<customer> muffinLine;
     vector<customer> braceletLine;
+    stack<customer> sandwichLine;
     
     //initialize coffee line
     for (int i = 0; i < START; i++) {
@@ -164,6 +184,12 @@ int main(int argc, const char * argv[]) {
         string n = randName(names);
         string d = randBracelet(bracelets);
         braceletLine.push_back({n,d});
+    }
+    
+    for (int i = 0; i < START; i++) {
+        string n = randName(names);
+        string d = randSandwich(sandwiches);
+        sandwichLine.push({n,d});
     }
     
     cout << "Initial Coffee Line: " << endl;
@@ -247,6 +273,11 @@ string randMuffin(string muffins[]){
 string randBracelet(string bracelets[]){
     int choice = rand() % SIZE2;
     return bracelets[choice];
+}
+
+string randSandwich(string sandwiches[]){
+    int choice = rand() % SIZE2;
+    return sandwiches[choice];
 }
 
 void addCustomer(customer *&head, customer *&tail,string name, string drink){
