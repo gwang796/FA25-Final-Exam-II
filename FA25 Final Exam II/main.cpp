@@ -48,10 +48,15 @@ void addCustomer(customer *&head, customer *&tail, string name, string drink);
 //return: none
 void customerPays(customer *&head,customer *&tail);
 
-//function printQeue prints the line of customer
+//function printQeue prints the line of customer for linked list
 //arguments:head pointer
 //return: none
 void printQueue(customer *head);
+
+//function printDeque prints the line of customers for deque container
+//argument: deque container line
+//return: none
+void printDeque(const deque<customer> &line);
 
 int main(int argc, const char * argv[]) {
     srand(time(0));
@@ -115,16 +120,27 @@ int main(int argc, const char * argv[]) {
     customer *tail = nullptr;
     deque<customer> muffinLine;
     
-    cout << "Initial Coffee Line" << endl;
     for (int i = 0; i < START; i++) {
         string n = randName(names);
         string d = randDrink(drinks);
         addCustomer(head, tail, n, d);
     }
+
+    for (int i = 0; i < START; i++) {
+        string n = randName(names);
+        string d = randDrink(drinks);
+        muffinLine.push_back({n,d});
+    }
+    
+    cout << "Initial Coffee Line: " << endl;
     printQueue(head);
+    cout << "\nInitial Muffin Line: " << endl;
+    printDeque(muffinLine);
+    
     
     for (int i = 0; i < RUNS; i++) {
-        cout << "Queue " << i + 1 << ": " << endl;
+        cout << "\nRound " << i + 1 << ": " << endl;
+        cout << "Coffe Booth: " << endl;
         int chance = rand() % 100 + 1;
         if (chance <= 50) {
             string n = randName(names);
@@ -133,18 +149,26 @@ int main(int argc, const char * argv[]) {
         }
         cout << "No customer joins Line" << endl;
         customerPays(head, tail);
+        printQueue(head);
+        cout << endl;
         
+        cout << "Muffin Booth Line: " << endl;
         chance = rand() % 100 + 1;
         if (chance <= 50) {
             string n = randName(names);
             string d = randMuffin(muffins);
-            
+            muffinLine.push_back({n,d});
+        } else {
+            cout << "No customer joins Line" << endl;
         }
         
         if (!muffinLine.empty()) {
-            cout << muffinLine.front().name() << " gets their muffin and leaves the line" << endl;
+            cout << muffinLine.front().name << " gets their muffin and leaves the line" << endl;
             muffinLine.pop_front();
+        } else {
+            cout << "Line is empty" << endl;
         }
+        printDeque(muffinLine);
     }
     return 0;
 }
@@ -194,5 +218,11 @@ void printQueue(customer *head){
     while (temp) {
         cout << temp->name << " ordered " << temp->item << endl;
         temp = temp->next;
+    }
+}
+
+void printDeque(const deque<customer> &line){
+    for (const customer &c : line) {
+        cout << c.name << " ordered " << c.item << endl;
     }
 }
