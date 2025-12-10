@@ -9,8 +9,9 @@
 #include <ctime>
 #include <cstdlib>
 #include <deque>
+#include <vector>
 using namespace std;
-const int SIZE = 100, DRINKS = 25, RUNS = 10, START = 3, MUFF = 10;
+const int SIZE1 = 100, SIZE2 = 10 ,SIZE3 = 25, RUNS = 10, START = 3;
 
 struct customer {
     string name,item;
@@ -38,30 +39,40 @@ string randDrink(string drinks[]);
 //return: string
 string randMuffin(string muffins[]);
 
+//function randBracelet gets random bracelet from string array
+//argument: string array
+//return: string
+string randBracelet(string bracelets[]);
+
 //function addCustomer adds a element to the end of linked list
-//arguments: head pointer, tail pointer, string name, string drink
+//arguments: head of linked list, tail of linked list, string name, string drink
 //return: none
 void addCustomer(customer *&head, customer *&tail, string name, string drink);
 
 //function customerPays has customer at the front of the line(head) get their drink and leave
-//arguments: head pointer, tail pointer
+//arguments: head of linked list, tail of linked list
 //return: none
 void customerPays(customer *&head,customer *&tail);
 
 //function printQeue prints the line of customer for linked list
-//arguments:head pointer
+//arguments:head of linked list
 //return: none
 void printQueue(customer *head);
 
 //function printDeque prints the line of customers for deque container
-//argument: deque container line
+//argument: deque line
 //return: none
 void printDeque(const deque<customer> &line);
+
+//function printVector prints the line of customers for vector container
+//argument: vector line
+//return: none
+void printVector(const vector<customer> &line);
 
 int main(int argc, const char * argv[]) {
     srand(time(0));
     //used LLM to create data set
-    string names[SIZE] = {
+    string names[SIZE1] = {
         "Oliver", "Charlotte", "Liam", "Ava", "Noah", "Sophia", "Elijah", "Amelia",
         "Mateo", "Isabella", "Lucas", "Mia", "Levi", "Evelyn", "James", "Harper",
         "Benjamin", "Luna", "Henry", "Camila", "William", "Gianna", "Theodore", "Elizabeth",
@@ -75,7 +86,7 @@ int main(int argc, const char * argv[]) {
         "Ezekiel", "Addison", "Elijah", "Willow", "Christopher", "Lucy", "Miles", "Paisley",
         "Jayden", "Natalie", "Nathan", "Delilah", "Caleb", "Naomi", "Ryan", "Brooklyn"
     };
-    string drinks[DRINKS] = {
+    string drinks[SIZE3] = {
         "Espresso",
         "Double Espresso",
         "Americano",
@@ -103,7 +114,7 @@ int main(int argc, const char * argv[]) {
         "Pumpkin Spice Latte"
     };
     
-    string muffins[MUFF] = {
+    string muffins[SIZE2] = {
         "Blueberry Muffin",
         "Chocolate Chip Muffin",
         "Banana Nut Muffin",
@@ -116,20 +127,43 @@ int main(int argc, const char * argv[]) {
         "Coffee Cake Muffin"
     };
     
+    string bracelets[SIZE2] = {
+        "Red Bracelet",
+        "Blue Bracelet",
+        "Green Bracelet",
+        "Yellow Bracelet",
+        "Black Bracelet",
+        "White Bracelet",
+        "Purple Bracelet",
+        "Pink Bracelet",
+        "Orange Bracelet",
+        "Silver Bracelet"
+    };
+    
     customer *head = nullptr;
     customer *tail = nullptr;
     deque<customer> muffinLine;
+    vector<customer> braceletLine;
     
+    //initialize coffee line
     for (int i = 0; i < START; i++) {
         string n = randName(names);
         string d = randDrink(drinks);
         addCustomer(head, tail, n, d);
     }
-
+    
+    //initialize muffin line
     for (int i = 0; i < START; i++) {
         string n = randName(names);
         string d = randDrink(drinks);
         muffinLine.push_back({n,d});
+    }
+    
+    //initialize bracelet line
+    for (int i = 0; i < START; i++) {
+        string n = randName(names);
+        string d = randDrink(drinks);
+        braceletLine.push_back({n,d});
     }
     
     cout << "Initial Coffee Line: " << endl;
@@ -169,23 +203,46 @@ int main(int argc, const char * argv[]) {
             cout << "Line is empty" << endl;
         }
         printDeque(muffinLine);
+        
+        cout << "Bracelet Booth Line: " << endl;
+        chance = rand() % 100 + 1;
+        if (chance <= 50) {
+            string n = randName(names);
+            string d = randMuffin(muffins);
+            braceletLine.push_back({n,d});
+        } else {
+            cout << "No customer joins Line" << endl;
+        }
+        
+        if (!braceletLine.empty()) {
+            cout << braceletLine.front().name << " gets their muffin and leaves the line" << endl;
+           // braceletLine
+        } else {
+            cout << "Line is empty" << endl;
+        }
+        printVector(braceletLine);
     }
     return 0;
 }
 
 string randName(string names[]){
-    int choice = rand() % SIZE;
+    int choice = rand() % SIZE1;
     return names[choice];
 }
 
 string randDrink(string drinks[]){
-    int choice = rand() % DRINKS;
+    int choice = rand() % SIZE3;
     return drinks[choice];
 }
 
 string randMuffin(string muffins[]){
-    int choice = rand() % MUFF;
+    int choice = rand() % SIZE2;
     return muffins[choice];
+}
+
+string randBracelet(string bracelets[]){
+    int choice = rand() % SIZE2;
+    return bracelets[choice];
 }
 
 void addCustomer(customer *&head, customer *&tail,string name, string drink){
@@ -223,6 +280,12 @@ void printQueue(customer *head){
 
 void printDeque(const deque<customer> &line){
     for (const customer &c : line) {
+        cout << c.name << " ordered " << c.item << endl;
+    }
+}
+
+void printVector(const vector<customer> &line){
+    for (const customer &c: line) {
         cout << c.name << " ordered " << c.item << endl;
     }
 }
