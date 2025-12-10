@@ -8,16 +8,17 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <deque>
 using namespace std;
-const int SIZE = 100, DRINKS = 25, RUNS = 10, START = 3;
+const int SIZE = 100, DRINKS = 25, RUNS = 10, START = 3, MUFF = 10;
 
 struct customer {
-    string name,drink;
+    string name,item;
     customer *next;
     
     customer(string n, string d) {
         name = n;
-        drink = d;
+        item = d;
         next = nullptr;
     }
 };
@@ -31,6 +32,11 @@ string randName(string names[]);
 //arguments: string array
 //return: string
 string randDrink(string drinks[]);
+
+//function getMuffins gets a random muffin from string array
+//arguments: string array
+//return: string
+string randMuffin(string muffins[]);
 
 //function addCustomer adds a element to the end of linked list
 //arguments: head pointer, tail pointer, string name, string drink
@@ -91,10 +97,25 @@ int main(int argc, const char * argv[]) {
         "Vanilla Latte",
         "Pumpkin Spice Latte"
     };
+    
+    string muffins[MUFF] = {
+        "Blueberry Muffin",
+        "Chocolate Chip Muffin",
+        "Banana Nut Muffin",
+        "Lemon Poppy Seed Muffin",
+        "Pumpkin Muffin",
+        "Bran Muffin",
+        "Apple Cinnamon Muffin",
+        "Double Chocolate Muffin",
+        "Raspberry Streusel Muffin",
+        "Coffee Cake Muffin"
+    };
+    
     customer *head = nullptr;
     customer *tail = nullptr;
+    deque<customer> muffinLine;
     
-    cout << "Initial Line" << endl;
+    cout << "Initial Coffee Line" << endl;
     for (int i = 0; i < START; i++) {
         string n = randName(names);
         string d = randDrink(drinks);
@@ -112,6 +133,18 @@ int main(int argc, const char * argv[]) {
         }
         cout << "No customer joins Line" << endl;
         customerPays(head, tail);
+        
+        chance = rand() % 100 + 1;
+        if (chance <= 50) {
+            string n = randName(names);
+            string d = randMuffin(muffins);
+            
+        }
+        
+        if (!muffinLine.empty()) {
+            cout << muffinLine.front().name() << " gets their muffin and leaves the line" << endl;
+            muffinLine.pop_front();
+        }
     }
     return 0;
 }
@@ -124,6 +157,11 @@ string randName(string names[]){
 string randDrink(string drinks[]){
     int choice = rand() % DRINKS;
     return drinks[choice];
+}
+
+string randMuffin(string muffins[]){
+    int choice = rand() % MUFF;
+    return muffins[choice];
 }
 
 void addCustomer(customer *&head, customer *&tail,string name, string drink){
@@ -143,7 +181,7 @@ void customerPays(customer *&head,customer *&tail){
     }
     customer *temp = head;
     head = head->next;
-    cout << temp->name << " gets their drink " << temp->drink << ", and leaves the line" << endl;
+    cout << temp->name << " gets their drink " << temp->item << ", and leaves the line" << endl;
     if (!head) {
         tail = nullptr;
     }
@@ -154,7 +192,7 @@ void customerPays(customer *&head,customer *&tail){
 void printQueue(customer *head){
     customer *temp = head;
     while (temp) {
-        cout << temp->name << " ordered " << temp->drink << endl;
+        cout << temp->name << " ordered " << temp->item << endl;
         temp = temp->next;
     }
 }
