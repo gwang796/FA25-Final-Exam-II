@@ -6,6 +6,8 @@
 //
 
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 using namespace std;
 const int SIZE = 100, DRINKS = 25, RUNS = 10;
 
@@ -24,7 +26,18 @@ string randName(string name[]);
 //return: string
 string randDrink(string drink[]);
 
+//function addCustomer adds a element to the end of linked list
+//arguments: string name, string drink
+//return: none
+void addCustomer(customer *&head, customer *&tail, string name, string drink);
+
+//function printQeue prints the line of customer
+//arguments: none
+//return: none
+void printQeue(customer *head);
+
 int main(int argc, const char * argv[]) {
+    srand(time(0));
     //used LLM to create data set
     string names[SIZE] = {
         "Oliver", "Charlotte", "Liam", "Ava", "Noah", "Sophia", "Elijah", "Amelia",
@@ -71,4 +84,32 @@ int main(int argc, const char * argv[]) {
     customer *tail = nullptr;
     
     return 0;
+}
+
+string randName(string name[]){
+    int choice = rand() % SIZE;
+    return name[choice];
+}
+
+string randDrink(string drink[]){
+    int choice = rand() % DRINKS;
+    return drink[choice];
+}
+
+void addCustomer(customer *&head, customer *&tail,string name, string drink){
+    customer *current = new customer(name,drink);
+    if (!head) { //linked list empty
+        head = tail = current;
+    } else {
+        tail->next = current;
+        tail = current;
+    }
+}
+
+void printQeue(customer *head){
+    customer *temp = head;
+    while (temp) {
+        cout << temp->name << "ordered " << temp->drink << endl;
+        temp = temp->next;
+    }
 }
